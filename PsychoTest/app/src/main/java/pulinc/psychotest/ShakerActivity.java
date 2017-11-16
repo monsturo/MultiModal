@@ -16,7 +16,7 @@ public class ShakerActivity extends AppCompatActivity {
     private int value;
     private int index = 0;
     private boolean running = true;
-    private Vibrator vibrator = (Vibrator) getSystemService(Vibrator.class);
+
     private Random random = new Random();
     private ArrayList<Tuple> tuples = new ArrayList<Tuple>();
 
@@ -24,14 +24,29 @@ public class ShakerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shaker);
-        vibrator.vibrate(shake);
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        shakeIt();
+    }
+    public void shakeIt(){
+        Vibrator vibrator = getSystemService(Vibrator.class);
+        if (random.nextInt() % 2 == 0) {
+            vibrator.vibrate(shake);
+            try {
+                Thread.sleep(400);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            value = shake + (random.nextInt() % 100) - (random.nextInt() % 100);
+            vibrator.vibrate(value);
+        } else {
+            vibrator.vibrate(shake);
+            try {
+                Thread.sleep(400);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            value = shake + (random.nextInt() % 100) - (random.nextInt() % 100);
+            vibrator.vibrate(value);
         }
-        value = shake + (random.nextInt() % 100) - (random.nextInt() % 100);
-        vibrator.vibrate(value);
     }
 
     public void shake(boolean left){
@@ -43,15 +58,14 @@ public class ShakerActivity extends AppCompatActivity {
 
             Intent intent = new Intent(this, EndingActivity.class);
         }
+        shakeIt();
     }
 
     public void shakeFirst(View view){
-        Button button = (Button) findViewById(R.id.button);
         shake(true);
     }
 
     public void shakeLast(View view){
-        Button button = (Button) findViewById(R.id.button2);
         shake(false);
     }
 

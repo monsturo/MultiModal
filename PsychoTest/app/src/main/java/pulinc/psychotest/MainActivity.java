@@ -19,7 +19,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void begin(View view) {
         Intent intent = new Intent(this, ShakerActivity.class);
-        Button button = (Button) findViewById(R.id.button);
         startActivity(intent);
     }
 

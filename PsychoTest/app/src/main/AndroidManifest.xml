@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ShakerActivity" />
-        <activity android:name=".EndingActivity"></activity>
+        <activity android:name=".EndingActivity"/>
     </application>
 
 </manifest>

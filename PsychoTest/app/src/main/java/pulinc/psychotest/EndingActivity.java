@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,6 +34,8 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.sheets.v4.SheetsScopes;
+import com.google.api.services.sheets.v4.model.AppendValuesResponse;
+import com.google.api.services.sheets.v4.model.UpdateValuesResponse;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
 import java.io.IOException;
@@ -44,6 +47,7 @@ import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class EndingActivity extends Activity implements EasyPermissions.PermissionCallbacks{
+        private ArrayList<Tuple> tuples;
         GoogleAccountCredential mCredential;
         private TextView mOutputText;
         private Button mCallApiButton;
@@ -56,9 +60,10 @@ public class EndingActivity extends Activity implements EasyPermissions.Permissi
 
         private static final String BUTTON_TEXT = "Call Google Sheets API";
         private static final String PREF_ACCOUNT_NAME = "accountName";
-        private static final String[] SCOPES = { SheetsScopes.SPREADSHEETS_READONLY };
+        private static final String[] SCOPES = { SheetsScopes.SPREADSHEETS };
 protected void onCreate(Bundle savedInstanceState){
     super.onCreate(savedInstanceState);
+    tuples = getIntent().getParcelableArrayListExtra("tuples");
     LinearLayout activityLayout = new LinearLayout(this);
     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
@@ -266,19 +271,20 @@ protected void onCreate(Bundle savedInstanceState){
          * @throws IOException
          */
         private List<String> getDataFromApi() throws IOException {
-            String spreadsheetId = "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms";
-            String range = "Class Data!A2:E";
-            List<String> results = new ArrayList<String>();
-            ValueRange response = this.mService.spreadsheets().values()
-                    .get(spreadsheetId, range)
-                    .execute();
-            List<List<Object>> values = response.getValues();
-            if (values != null) {
-                results.add("Name, Major");
-                for (List row : values) {
-                    results.add(row.get(0) + ", " + row.get(4));
-                }
+            String spreadsheetId = "1qRo1XYF4DEKKbkOi4V_n7wHx-O_VqgkFI2mNGl7-Dfs";
+            String range = "Data";
+            List<Object> vals = new ArrayList<Object>();
+            List<String> results = new ArrayList<>();
+            for (Tuple tuple : tuples){
+                vals.add(tuple.getValue());
+                results.add(Integer.toString(tuple.getValue()));
             }
+            List<List<Object>> values = Arrays.asList(vals);
+            ValueRange body = new ValueRange().setValues(values);
+            body.setMajorDimension("ROWS");
+            AppendValuesResponse result = mService.spreadsheets().values().append(spreadsheetId, range, body).
+                    setValueInputOption("RAW").execute();
+
             return results;
         }
 

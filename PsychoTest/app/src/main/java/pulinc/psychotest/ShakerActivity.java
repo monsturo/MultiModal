@@ -56,11 +56,11 @@ public class ShakerActivity extends AppCompatActivity {
 
     public void shake(boolean left){
 
-        if (index <= 5) {
+        if (index <= 20) {
             index++;
             value = shake + (random.nextInt() % 100) - (random.nextInt() % 100);
             if (first == left) {
-                tuples.add(new Tuple(left, shake, index));
+                tuples.add(new Tuple(left, value, index));
             } else {
                 tuples.add(new Tuple(left, value, index));
             }

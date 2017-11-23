@@ -277,7 +277,7 @@ protected void onCreate(Bundle savedInstanceState){
             List<String> results = new ArrayList<>();
             for (Tuple tuple : tuples){
                 vals.add(tuple.getValue());
-                results.add(Integer.toString(tuple.getValue()));
+                results.add(Boolean.toString(tuple.getStandard()) + "," + Integer.toString(tuple.getValue()));
             }
             List<List<Object>> values = Arrays.asList(vals);
             ValueRange body = new ValueRange().setValues(values);

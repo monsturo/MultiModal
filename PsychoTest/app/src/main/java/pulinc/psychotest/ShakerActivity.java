@@ -60,9 +60,9 @@ public class ShakerActivity extends AppCompatActivity {
             index++;
             value = shake + (random.nextInt() % 100) - (random.nextInt() % 100);
             if (first == left) {
-                tuples.add(new Tuple(left, value, index));
+                tuples.add(new Tuple(true, value, index));
             } else {
-                tuples.add(new Tuple(left, value, index));
+                tuples.add(new Tuple(false, value, index));
             }
         } else {
             Intent intent = new Intent(this, EndingActivity.class);

@@ -276,7 +276,7 @@ protected void onCreate(Bundle savedInstanceState){
             List<Object> vals = new ArrayList<Object>();
             List<String> results = new ArrayList<>();
             for (Tuple tuple : tuples){
-                vals.add(tuple.getValue());
+                vals.add(Boolean.toString(tuple.getStandard()) + "," + Integer.toString(tuple.getValue()));
                 results.add(Boolean.toString(tuple.getStandard()) + "," + Integer.toString(tuple.getValue()));
             }
             List<List<Object>> values = Arrays.asList(vals);

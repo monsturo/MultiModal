@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/linMenu"
+        android:background="@android:color/holo_orange_light"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Start Game"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:background="@android:color/holo_blue_dark"
+            android:id="@+id/gametoplay"
+            />
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@android:color/holo_green_dark"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="turn of:"
+                android:padding="5dp"
+                android:textSize="18sp"
+                android:id="@+id/tvTurn3"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Click below to play"
+                android:padding="5dp"
+                android:textSize="18sp"
+                android:id="@+id/tvTurn"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/linBoardGame"
+        android:orientation="vertical"
+
+        android:background="@android:color/holo_blue_bright"
+        android:layout_below="@id/linMenu"
+        >
+
+    </LinearLayout>
+</RelativeLayout>

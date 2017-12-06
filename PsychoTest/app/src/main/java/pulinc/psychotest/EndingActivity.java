@@ -41,6 +41,7 @@ import com.google.api.services.sheets.v4.model.ValueRange;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
@@ -273,17 +274,52 @@ protected void onCreate(Bundle savedInstanceState){
         private List<String> getDataFromApi() throws IOException {
             String spreadsheetId = "1qRo1XYF4DEKKbkOi4V_n7wHx-O_VqgkFI2mNGl7-Dfs";
             String range = "Data";
-            List<Object> vals = new ArrayList<Object>();
+            List<Integer> base = new ArrayList<Integer>();
+            List<Integer> nbase = new ArrayList<Integer>();
+
+            ValueRange response = mService.spreadsheets().values()
+                    .get(spreadsheetId, range)
+                    .execute();
+            List<List<Object>> values = response.getValues();
             List<String> results = new ArrayList<>();
-            for (Tuple tuple : tuples){
-                vals.add(Boolean.toString(tuple.getStandard()) + "," + Integer.toString(tuple.getValue()));
-                results.add(Boolean.toString(tuple.getStandard()) + "," + Integer.toString(tuple.getValue()));
+            for (List row : values) {
+                for (int i = 0; i < 20; i++){
+                    if (((String)row.get(i)).contains("true")){
+                        base.add(Integer.parseInt(((String)row.get(i)).split(",")[1]));
+                    } else {
+                        nbase.add(Integer.parseInt(((String)row.get(i)).split(",")[1]));
+                    }
+
+                }
             }
-            List<List<Object>> values = Arrays.asList(vals);
-            ValueRange body = new ValueRange().setValues(values);
+            Collections.sort(base);
+            Collections.sort(nbase);
+            results.add("Done");
+            List<Object> basen = new ArrayList<Object>();
+            List<Object> nbasen = new ArrayList<Object>();
+            basen.addAll(base);
+            nbasen.addAll(nbase);
+            List<List<Object>> basebody = Arrays.asList(basen);
+            List<List<Object>> basenbody = Arrays.asList(nbasen);
+            ValueRange body = new ValueRange().setValues(basebody);
             body.setMajorDimension("ROWS");
             AppendValuesResponse result = mService.spreadsheets().values().append(spreadsheetId, range, body).
                     setValueInputOption("RAW").execute();
+            ValueRange nbody = new ValueRange().setValues(basenbody);
+            nbody.setMajorDimension("ROWS");
+            AppendValuesResponse nresult = mService.spreadsheets().values().append(spreadsheetId, range, nbody).
+                    setValueInputOption("RAW").execute();
+//            List<Object> vals = new ArrayList<Object>();
+//            List<String> results = new ArrayList<>();
+//            for (Tuple tuple : tuples){
+//                vals.add(Boolean.toString(tuple.getStandard()) + "," + Integer.toString(tuple.getValue()));
+//                results.add(Boolean.toString(tuple.getStandard()) + "," + Integer.toString(tuple.getValue()));
+//            }
+//            List<List<Object>> values = Arrays.asList(vals);
+//            ValueRange body = new ValueRange().setValues(values);
+//            body.setMajorDimension("ROWS");
+//            AppendValuesResponse result = mService.spreadsheets().values().append(spreadsheetId, range, body).
+//                    setValueInputOption("RAW").execute();
 
             return results;
         }

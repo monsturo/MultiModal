@@ -1,14 +1,10 @@
 package pulinc.psychotest;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -56,7 +52,7 @@ public class ShakerActivity extends AppCompatActivity {
 
     public void shake(boolean left){
 
-        if (index <= 20) {
+        if (index <= 2) {
             index++;
             value = shake + (random.nextInt() % 100) - (random.nextInt() % 100);
             if (first == left) {
